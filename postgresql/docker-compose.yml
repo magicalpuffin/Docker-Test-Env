@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: pgexamplepassword
+    volumes:
+      - pgexample_db_data:/var/lib/postgresql/data
+  
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  pgexample_db_data:
