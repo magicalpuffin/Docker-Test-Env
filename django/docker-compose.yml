@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    command: python project/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    environment:
+      - POSTGRES_PASSWORD=pgexamplepassword
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: pgexamplepassword
+    volumes:
+      - pgexample_db_data:/var/lib/postgresql/data
+  
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+
+volumes:
+  pgexample_db_data:
