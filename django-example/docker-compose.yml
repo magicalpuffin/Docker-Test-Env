@@ -14,7 +14,7 @@ services:
 
   db:
     image: postgres
-    restart: always
+    restart: on-failure:5
     environment:
       POSTGRES_PASSWORD: pgexamplepassword
     volumes:
@@ -22,7 +22,7 @@ services:
   
   adminer:
     image: adminer
-    restart: always
+    restart: on-failure:5
     ports:
       - 8080:8080
     depends_on:
