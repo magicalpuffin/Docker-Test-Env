@@ -5,7 +5,7 @@ $ecrUri = "$($AWS_ACCOUNT_ID).dkr.ecr.$($AWS_REGION).amazonaws.com/$($ECR_REPO)"
 # Build the Docker image
 Write-Output "Docker Building: $($IMAGE_NAME):$($TAG)"
 zappa save-python-settings-file dev
-docker build -t "$($IMAGE_NAME):$($TAG)" .
+docker build -t "$($IMAGE_NAME):$($TAG)" -f docker/Dockerfile_dev .
 
 # Tag the Docker image with the ECR repository URI
 Write-Output "Docker Tagging: $($IMAGE_NAME):$($TAG) -> $($ecrUri):$($TAG)"

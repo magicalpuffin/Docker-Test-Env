@@ -9,3 +9,15 @@
 ### Should figure out
 - Database migrations
 - Easier ways to run the handler
+
+### Docker Files
+- docker-compose will be used for creating the local test environment
+- dockerfiles for dev and local. The dev docker file would be built and deployed with zappa.
+- everything should be run from the root folder
+
+### Powershell Scripts
+- Used for deploying to AWS ECR
+- Edit variables in other powershell file
+
+### Local
+- Local testing environment. 
