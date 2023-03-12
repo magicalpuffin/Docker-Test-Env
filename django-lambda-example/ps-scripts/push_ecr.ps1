@@ -1,3 +1,11 @@
+# Builds container and pushes image to AWS ECR
+
+# TODO
+# Not hardcode the docker file
+# Why build and tag? Would just tagging directly work?
+# Make it stop creating so many images
+# Have it stop if there are issues
+
 . ps-scripts/env.ps1
 
 $ecrUri = "$($AWS_ACCOUNT_ID).dkr.ecr.$($AWS_REGION).amazonaws.com/$($ECR_REPO)"

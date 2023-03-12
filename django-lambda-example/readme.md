@@ -19,5 +19,39 @@
 - Used for deploying to AWS ECR
 - Edit variables in other powershell file
 
-### Local
-- Local testing environment. 
+### Environment Variables
+I have like a bunch of environment variables now. The ones that get passed into the dev version are
+passed in through zappa settings. There are environment variables just used for the power shell scripts.
+There are environment variables passed in for the local version
+
+## Versions
+- I don't know what is the right word, there will need to be multiple different versions
+### local
+- Local test environment to test changes imediately
+- Uses docker and docker compose. Local version of postgres running
+## dev
+- Deployed using zappa to a online dev instance. Used to debug any lambda issues
+- Uses AWS RDS postgres database. Are on the same VPC
+- Probaly needs some S3 thing for staic files
+## production
+- I dunno haven't made it yet
+
+## Setup
+### Postgres Database Setup
+For creating and using another user instead of admin
+- Create database: `CREATE DATABASE database_name;`
+- Create user: `CREATE USER my_username WITH PASSWORD 'my_password';`
+- Grant database privileges: `GRANT ALL PRIVILEGES ON DATABASE database_name to my_username;`
+- Grant all public schema: `GRANT ALL ON SCHEMA public TO my_username;`
+    - Required for Postgresql 15
+    - Should be connected to the target database
+
+### Django Database Migrations
+Normally
+- `python manage.py showmigrations`
+- `python manage.py makemigrations`
+- `python manage.py migrate`
+Zappa
+- `zappa manage dev showmigrations`
+- `zappa manage dev makemigrations`
+- `zappa manage dev migrate`
