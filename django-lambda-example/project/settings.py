@@ -27,13 +27,14 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'secretkey')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
+ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS', 'localhost')]
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'app1.apps.App1Config',
+    'django_s3_storage',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -121,7 +122,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATICFILES_STORAGE = os.environ.get('STATICFILES_STORAGE', 'django.contrib.staticfiles.storage.StaticFilesStorage')
+AWS_S3_BUCKET_NAME_STATIC = os.environ.get('AWS_S3_BUCKET_NAME_STATIC')
+
+if AWS_S3_BUCKET_NAME_STATIC:
+   STATIC_URL= "https://%s.s3.amazonaws.com/" % AWS_S3_BUCKET_NAME_STATIC
+else:
+   STATIC_URL= 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

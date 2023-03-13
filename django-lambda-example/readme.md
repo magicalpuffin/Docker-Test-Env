@@ -24,6 +24,29 @@ I have like a bunch of environment variables now. The ones that get passed into 
 passed in through zappa settings. There are environment variables just used for the power shell scripts.
 There are environment variables passed in for the local version
 
+## AWS Services
+- lambda
+    - Zappa is used to create and update AWS Lambda functions using images in ECR
+    - Zappa also sets up API for calling the AWS Lambda function
+    - The Lambda function must be using the same VPC as RDS
+- ecr (Elastic Container Registery)
+    - Used for storing containers to be deployed with AWS Lambda
+- rds (Relational Database Service)
+    - AWS RDS used to create and manage the database. Used for the Postgres database.
+    - Database is added to a VPC. To connect using psql, ip address of local must be added
+    to security group for inbound and outbound
+    - Similar to EC2 but more managed databases
+- s3 (Simple Storage Service)
+    - Also temporarily used by Zappa
+    - Used for serving static files
+    - Required adding s3 gateway as an endpoint to VPC
+    - Object ownership must have ACLs enabled
+    - Need to modify CORS to allow content to be retrieved form S3
+- vpc (Virtual Private Cloud)
+    - For secure connections between services
+- api gateway
+    - Used to call the lambda function from a url
+
 ## Versions
 - I don't know what is the right word, there will need to be multiple different versions
 ### local
@@ -37,6 +60,8 @@ There are environment variables passed in for the local version
 - I dunno haven't made it yet
 
 ## Setup
+### Zappa Commands
+- Check Status: `zappa status dev`
 ### Postgres Database Setup
 For creating and using another user instead of admin
 - Create database: `CREATE DATABASE database_name;`
@@ -55,3 +80,10 @@ Zappa
 - `zappa manage dev showmigrations`
 - `zappa manage dev makemigrations`
 - `zappa manage dev migrate`
+
+### Django Static Files
+Normally
+- `python manage.py collectstatic --noinput`
+Zappa
+- `zappa manage dev collectstatic --noinput`
+    - Note that lambda must be up to date
