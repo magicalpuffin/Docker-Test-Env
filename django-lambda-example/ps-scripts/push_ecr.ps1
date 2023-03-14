@@ -1,23 +1,17 @@
 # Builds container and pushes image to AWS ECR
 
-# TODO
-# Not hardcode the docker file
-# Why build and tag? Would just tagging directly work?
-# Make it stop creating so many images
-# Have it stop if there are issues
-
 . ps-scripts/env.ps1
 
 $ecrUri = "$($AWS_ACCOUNT_ID).dkr.ecr.$($AWS_REGION).amazonaws.com/$($ECR_REPO)"
 
 # Build the Docker image
-Write-Output "Docker Building: $($IMAGE_NAME):$($TAG)"
+Write-Output "Docker Building: $($ecrUri):$($TAG)"
 zappa save-python-settings-file dev
-docker build -t "$($IMAGE_NAME):$($TAG)" -f docker/Dockerfile_dev .
+docker build --tag "$($ecrUri):$($TAG)" --label "$($IMAGE_LABEL)" --file docker/Dockerfile_dev .
 
-# Tag the Docker image with the ECR repository URI
-Write-Output "Docker Tagging: $($IMAGE_NAME):$($TAG) -> $($ecrUri):$($TAG)"
-docker tag "$($IMAGE_NAME):$($TAG)" "$($ecrUri):$($TAG)"
+# Remove previous image
+Write-Output "Docker Removing Previous Image: $($ecrUri)"
+docker image prune --force --filter "label=$($IMAGE_LABEL)"
 
 # Authenticate to ECR using the AWS CLI
 Write-Output "Authenticating Docker: $($ecrUri)"
