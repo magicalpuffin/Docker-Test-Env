@@ -85,5 +85,5 @@ Zappa
 Normally
 - `python manage.py collectstatic --noinput`
 Zappa
-- `zappa manage dev collectstatic --noinput`
+- `zappa manage dev "collectstatic --noinput"`
     - Note that lambda must be up to date
